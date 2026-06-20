@@ -76,7 +76,6 @@ c2.metric("Total routes", k["total_routes"])
 c3.metric("Total score", k["total_score"])
 c4.metric("Gyms visited", k["gyms_visited"])
 c5.metric("Hardest color", k["hardest_color"] or "—")
-# c6.metric("Longest streak", f"{k['longest_streak']} d")
 
 st.divider()
 

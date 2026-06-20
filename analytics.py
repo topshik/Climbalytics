@@ -106,23 +106,7 @@ def kpis(df: pd.DataFrame, long: pd.DataFrame) -> dict[str, object]:
         "sessions": int(len(df)),
         "gyms_visited": int(df["gym"].nunique()),
         "hardest_color": hardest,
-        # "longest_streak": longest_streak(df),
     }
-
-
-# def longest_streak(df: pd.DataFrame) -> int:
-#     """Longest run of consecutive calendar days with at least one session."""
-#     if df.empty:
-#         return 0
-#     days = sorted(df["day"].dt.normalize().unique())
-#     best = run = 1
-#     for prev, cur in zip(days, days[1:]):
-#         if (cur - prev) == pd.Timedelta(days=1):
-#             run += 1
-#             best = max(best, run)
-#         else:
-#             run = 1
-#     return best
 
 
 def athlete_comparison(long: pd.DataFrame) -> pd.DataFrame:
