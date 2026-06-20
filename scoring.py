@@ -49,6 +49,7 @@ def _exponential_points() -> dict[str, int]:
 SCHEMES: dict[str, dict[str, int]] = {
     "linear": _linear_points(),
     "arithmetic": _arithmetic_points(),
+    "exponential": _exponential_points(),
 }
 
 ACTIVE_SCHEME = "arithmetic"
