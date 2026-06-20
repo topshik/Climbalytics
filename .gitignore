@@ -1,0 +1,12 @@
+# Data files
+input/
+output/
+
+# IDE
+.idea/
+.junie/
+
+# Python
+.venv/
+__pycache__/
+*.pyc

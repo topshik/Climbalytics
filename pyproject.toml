@@ -1,0 +1,14 @@
+[project]
+name = "climbalytics"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "pymorphy2>=0.9.1",
+    "pymorphy2-dicts-ru>=2.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "setuptools>=80.9.0",
+]
