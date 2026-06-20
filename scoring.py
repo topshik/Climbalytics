@@ -9,11 +9,8 @@ To change the scoring later:
   - add a new scheme to SCHEMES and switch ACTIVE_SCHEME.
 """
 
-# Canonical Sektor44 colors in ascending difficulty order.
-# Same set as SEKTOR_COLORS in colors.py, but ordered by real climbing
-# difficulty (зелёный and фиолетовый are easier than розовый/красный) rather
-# than by colors.py's parse-list order. Kept independent here to avoid importing
-# pymorphy2 just to render the dashboard.
+# Canonical Sektor44 colors in ascending difficulty order. Same set as SEKTOR_COLORS in colors.py.
+# Kept independent here to avoid importing pymorphy2 just to render the dashboard.
 COLOR_ORDER = [
     "белый", "жёлтый", "зелёный", "фиолетовый", "розовый",
     "красный", "оранжевый", "синий", "чёрный",
@@ -37,13 +34,24 @@ def _linear_points() -> dict[str, int]:
     """1 point for the easiest color, +1 per step up the difficulty scale."""
     return {color: i + 1 for i, color in enumerate(COLOR_ORDER)}
 
+def _arithmetic_points() -> dict[str, int]:
+    """1 point for the easiest color, +k per step up the difficulty scale."""
+    k = 2
+    return {color: k * i + 1 for i, color in enumerate(COLOR_ORDER)}
+
+def _exponential_points() -> dict[str, int]:
+    """1 point for the easiest color, k times more per step up the difficulty scale."""
+    k = 1.5
+    return {color: i**k + 1 for i, color in enumerate(COLOR_ORDER)}
+
 
 # Registry of named scoring schemes. Add more (e.g. exponential) here.
 SCHEMES: dict[str, dict[str, int]] = {
     "linear": _linear_points(),
+    "arithmetic": _arithmetic_points(),
 }
 
-ACTIVE_SCHEME = "linear"
+ACTIVE_SCHEME = "arithmetic"
 
 
 def color_points() -> dict[str, int]:
