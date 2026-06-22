@@ -51,18 +51,33 @@ def to_long(df: pd.DataFrame) -> pd.DataFrame:
 
 # --- Metrics ---------------------------------------------------------------
 
+def _add_rolling(df: pd.DataFrame, col: str, window: str = "30D") -> pd.DataFrame:
+    """Add a <col>_ma column: 30-calendar-day rolling mean per athlete."""
+    df = df.sort_values(["athlete", "day"]).copy()
+    ma_parts = []
+    for _, grp in df.groupby("athlete"):
+        indexed = grp.set_index("day")
+        ma = indexed[col].rolling(window, min_periods=1).mean()
+        ma.index = grp.index
+        ma_parts.append(ma)
+    df[f"{col}_ma"] = pd.concat(ma_parts)
+    return df
+
+
 def routes_per_day(long: pd.DataFrame) -> pd.DataFrame:
-    """Total routes climbed per day."""
-    return (
-        long.groupby("day", as_index=False)["count"]
+    """Total routes climbed per day, per athlete, with 30-day moving average."""
+    raw = (
+        long.groupby(["day", "athlete"], as_index=False)["count"]
         .sum()
         .rename(columns={"count": "routes"})
     )
+    return _add_rolling(raw, "routes")
 
 
 def score_per_day(long: pd.DataFrame) -> pd.DataFrame:
-    """Total score per day."""
-    return long.groupby("day", as_index=False)["score"].sum()
+    """Total score per day, per athlete, with 30-day moving average."""
+    raw = long.groupby(["day", "athlete"], as_index=False)["score"].sum()
+    return _add_rolling(raw, "score")
 
 
 def points_per_gym(long: pd.DataFrame) -> pd.DataFrame:

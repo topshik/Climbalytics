@@ -41,8 +41,8 @@ def _arithmetic_points() -> dict[str, int]:
 
 def _exponential_points() -> dict[str, int]:
     """1 point for the easiest color, k times more per step up the difficulty scale."""
-    k = 1.5
-    return {color: i**k + 1 for i, color in enumerate(COLOR_ORDER)}
+    k = 2
+    return {color: k**i + 1 for i, color in enumerate(COLOR_ORDER)}
 
 
 # Registry of named scoring schemes. Add more (e.g. exponential) here.
@@ -52,7 +52,7 @@ SCHEMES: dict[str, dict[str, int]] = {
     "exponential": _exponential_points(),
 }
 
-ACTIVE_SCHEME: str = "arithmetic"
+ACTIVE_SCHEME: str = "exponential"
 
 
 def color_points() -> dict[str, int]:

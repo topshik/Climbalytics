@@ -7,7 +7,9 @@ This module is the thin UI layer: it loads data, exposes sidebar filters, and
 renders charts. All aggregation lives in analytics.py; all scoring in scoring.py.
 """
 
+import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 import analytics
@@ -70,7 +72,7 @@ long = analytics.to_long(fdf)
 
 # --- KPI cards -------------------------------------------------------------
 k = analytics.kpis(fdf, long)
-c1, c2, c3, c4, c5, c6 = st.columns(6)
+c1, c2, c3, c4, c5 = st.columns(5)
 c1.metric("Sessions", k["sessions"])
 c2.metric("Total routes", k["total_routes"])
 c3.metric("Total score", k["total_score"])
@@ -82,17 +84,45 @@ st.divider()
 # --- Time series -----------------------------------------------------------
 left, right = st.columns(2)
 
+ATHLETE_COLORS = px.colors.qualitative.Plotly
+
+
+def _ts_fig(df: pd.DataFrame, y_col: str) -> go.Figure:
+    fig = go.Figure()
+    athletes = sorted(df["athlete"].unique())
+    for i, athlete in enumerate(athletes):
+        color = ATHLETE_COLORS[i % len(ATHLETE_COLORS)]
+        adf = df[df["athlete"] == athlete].sort_values("day")
+        fig.add_trace(go.Scatter(
+            x=adf["day"], y=adf[y_col],
+            mode="lines+markers",
+            name=athlete,
+            legendgroup=athlete,
+            showlegend=False,
+            line=dict(color=color, width=1),
+            marker=dict(size=4),
+            opacity=0.35,
+        ))
+        fig.add_trace(go.Scatter(
+            x=adf["day"], y=adf[f"{y_col}_ma"],
+            mode="lines",
+            name=athlete,
+            legendgroup=athlete,
+            showlegend=True,
+            line=dict(color=color, width=3),
+        ))
+    return fig
+
+
 with left:
     st.subheader("Routes per day")
     rpd = analytics.routes_per_day(long)
-    fig = px.bar(rpd, x="day", y="routes")
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(_ts_fig(rpd, "routes"), width='stretch')
 
 with right:
     st.subheader("Score per day")
     spd = analytics.score_per_day(long)
-    fig = px.bar(spd, x="day", y="score")
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(_ts_fig(spd, "score"), width='stretch')
 
 # --- Gym breakdowns --------------------------------------------------------
 left, right = st.columns(2)
