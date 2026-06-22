@@ -26,7 +26,8 @@ class Session:
         lines = self._text.split("\n")
         first_line = lines[0]
 
-        if first_line.split()[0] in _COLOR_CANONICAL:
+        first_word = first_line.split()[0]
+        if first_word in _COLOR_CANONICAL or first_word == "гришины":
             self._gym = "Sektor44"
             self._city = get_gym_city(self._gym)
             self._routes = self._build_routes_dict(lines)
