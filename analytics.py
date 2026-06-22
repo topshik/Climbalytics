@@ -14,9 +14,9 @@ import pandas as pd
 from scoring import COLOR_ORDER, points_for
 
 # Identifying (non-color) columns in output/sessions.csv.
-META_COLUMNS = ["date", "athlete", "gym", "city", "trainer"]
+META_COLUMNS: list[str] = ["date", "athlete", "gym", "city", "trainer"]
 # Trainer-route tallies — counts of routes done with a trainer, not colors.
-TRAINER_COLUMNS = ["гришины", "женины"]
+TRAINER_COLUMNS: list[str] = ["гришины", "женины"]
 
 
 def load_sessions(path: str = "output/sessions.csv") -> pd.DataFrame:

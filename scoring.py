@@ -11,13 +11,13 @@ To change the scoring later:
 
 # Canonical Sektor44 colors in ascending difficulty order. Same set as SEKTOR_COLORS in colors.py.
 # Kept independent here to avoid importing pymorphy2 just to render the dashboard.
-COLOR_ORDER = [
+COLOR_ORDER: list[str] = [
     "белый", "жёлтый", "зелёный", "фиолетовый", "розовый",
     "красный", "оранжевый", "синий", "чёрный",
 ]
 
 # Display colors (hex) so charts roughly match real route colors.
-COLOR_HEX = {
+COLOR_HEX: dict[str, str] = {
     "белый": "#cfcfcf",       # rendered grey so it's visible on white bg
     "жёлтый": "#f1c40f",
     "зелёный": "#2ecc71",
@@ -52,7 +52,7 @@ SCHEMES: dict[str, dict[str, int]] = {
     "exponential": _exponential_points(),
 }
 
-ACTIVE_SCHEME = "arithmetic"
+ACTIVE_SCHEME: str = "arithmetic"
 
 
 def color_points() -> dict[str, int]:

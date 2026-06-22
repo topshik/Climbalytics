@@ -6,15 +6,15 @@ import pymorphy2
 # pymorphy2 0.9.1 uses inspect.getargspec (removed in Python 3.11+).
 inspect.getargspec = lambda f: inspect.getfullargspec(f)[:4]
 
-_MORPH = pymorphy2.MorphAnalyzer()
+_MORPH: pymorphy2.MorphAnalyzer = pymorphy2.MorphAnalyzer()
 
-_COLOR_CANONICAL = {
+_COLOR_CANONICAL: set[str] = {
     "белый", "жёлтый", "розовый", "красный", "зелёный",
     "фиолетовый", "оранжевый", "синий", "чёрный", "голубой",
 }
 
-SEKTOR_COLORS = ["белый", "жёлтый", "розовый", "красный", "зелёный", "фиолетовый", "оранжевый", "синий", "чёрный"]
-TRAINER_COLORS = ["гришины", "женины"]
+SEKTOR_COLORS: list[str] = ["белый", "жёлтый", "розовый", "красный", "зелёный", "фиолетовый", "оранжевый", "синий", "чёрный"]
+TRAINER_COLORS: list[str] = ["гришины", "женины"]
 
 # Per-gym color mappings to Sektor equivalents (derived from gym notes in chat.json)
 _GYM_COLOR_MAP: dict[str, dict[str, str]] = {
